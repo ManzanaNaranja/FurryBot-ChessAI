@@ -115,18 +115,19 @@ class ChessUtils {
     return this.squaresOf(colour).map(square => valueOf[this.chess.get(square).type]).reduce((a, b) => a + b);
   }
 
-  minimax(depth, isMaximizing) {
-    if(isMaximizing) return this.maxi(depth);
-    else return this.mini(depth);
+  minimax(depth) {
+    return this.mini(depth, -Infinity, Infinity);
   }
 
-  maxi(depth) {
+  maxi(depth, alpha, beta) {
     if(depth == 0 || this.chess.game_over()) return this.materialEval();
     let max = -Infinity;
     let moves = this.legalMoves();
     moves.forEach(m => {
       this.move(m);
       let score = this.mini(depth-1);
+      alpha = Math.max(alpha, score);
+      if(beta <= alpha) return max;
       this.undo();
       if(score > max) {
         max = score;
@@ -135,13 +136,15 @@ class ChessUtils {
     return max;
   }
 
-  mini(depth) {
+  mini(depth, alpha, beta) {
     if(depth == 0 || this.chess.game_over()) return this.materialEval();
     let min = Infinity;
     let moves = this.legalMoves();
     moves.forEach(m => {
       this.move(m);
       let score = this.maxi(depth-1);
+      beta = Math.min(beta, score);
+      if(beta <= alpha) return min;
       this.undo();
       if(score < min) {
         min = score;
