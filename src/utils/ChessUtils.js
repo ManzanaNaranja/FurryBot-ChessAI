@@ -116,39 +116,35 @@ class ChessUtils {
   }
 
   minimax(depth) {
-    return this.mini(depth, -Infinity, Infinity);
+    return this.mini(depth, -Infinity, Infinity, 1);
   }
 
-  maxi(depth, alpha, beta) {
-    if(depth == 0 || this.chess.game_over()) return this.materialEval();
+  maxi(depth, alpha, beta, c) {
+    if(depth == 0 || this.chess.game_over()) return c * this.materialEval();
     let max = -Infinity;
     let moves = this.legalMoves();
     moves.forEach(m => {
       this.move(m);
-      let score = this.mini(depth-1);
-      alpha = Math.max(alpha, score);
-      if(beta <= alpha) return max;
+      let score = this.mini(depth-1, alpha, beta, c);
       this.undo();
-      if(score > max) {
-        max = score;
-      }
+      max = Math.max(max, score);
+      alpha = Math.max(alpha, max);
+      if(beta <= alpha) return alpha;
     })
     return max;
   }
 
-  mini(depth, alpha, beta) {
-    if(depth == 0 || this.chess.game_over()) return this.materialEval();
+  mini(depth, alpha, beta, c) {
+    if(depth == 0 || this.chess.game_over()) return c * this.materialEval();
     let min = Infinity;
     let moves = this.legalMoves();
     moves.forEach(m => {
       this.move(m);
-      let score = this.maxi(depth-1);
-      beta = Math.min(beta, score);
-      if(beta <= alpha) return min;
+      let score = this.maxi(depth-1, alpha, beta, c);
       this.undo();
-      if(score < min) {
-        min = score;
-      }
+      min = Math.min(min, score);
+      beta = Math.min(beta, min);
+      if(beta <= alpha) return beta;
     })
     return min;
   }

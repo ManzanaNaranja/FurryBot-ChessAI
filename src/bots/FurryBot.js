@@ -8,17 +8,15 @@ class FurryBot {
         
         let bestEval = -Infinity;
         let bestMove;
+        let isWhite = chess.turn() == 'w'
         for(let i = 0; i < legalMoves.length; i++) {
             
             chess.move(legalMoves[i]);
             // let val = chess.materialEval();
             let depth = 2;
-            let val;
-            if(chess.turn() == 'b') { // AI IS WHITE, so black must be minimizing
-                val =  chess.mini(depth, -Infinity, Infinity);
-            } else {
-                val =  chess.maxi(depth, -Infinity, Infinity); // FIX< IT PLAY ANTICHESS LOL
-            } 
+            
+            // let val =  chess.mini(depth, -Infinity, Infinity, (isWhite ? 1 : -1));
+            let val =  chess.mini(depth, -Infinity, Infinity, (isWhite ? 1 : -1));
             
             chess.undo();
             if(val > bestEval) {
