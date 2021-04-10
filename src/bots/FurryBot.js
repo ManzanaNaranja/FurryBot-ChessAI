@@ -3,8 +3,19 @@ const ChessUtils = require("../utils/ChessUtils");
 let turn = 0;
 
 class FurryBot {
+    constructor() {
+        this.startPosition = undefined;
+    }
+
+    setStartPosition(pos) {
+        if(pos !== "startpos") {
+            this.startPosition = pos;
+            console.log(pos);
+        }
+    }
+
     getNextMove(moves) {
-        let chess = new ChessUtils();
+        let chess = new ChessUtils(this.startPosition);
         chess.applyMoves(moves);
         let legalMoves = chess.legalMoves();
         // this.reorder(legalMoves);
@@ -16,9 +27,10 @@ class FurryBot {
             
             chess.move(legalMoves[i]);
             let depth = 2;
+            
+            let val = chess.minimax(depth, (isWhite ? 1 : -1));
 
-            let val =  chess.minimax(depth, (isWhite ? 1 : -1));
-           console.log("move: " + chess.uci(legalMoves[i]) + " score: " + val)
+            console.log("move: " + chess.uci(legalMoves[i]) + " score: " + val)
             
             chess.undo();
             if(val > bestEval) {
@@ -27,7 +39,6 @@ class FurryBot {
             }
         }
         console.log("Nodes: " + chess.nodes);
-
         if(legalMoves.length) {
             return chess.uci(bestMove);
         }

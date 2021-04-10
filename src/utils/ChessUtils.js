@@ -9,7 +9,6 @@ class ChessUtils {
   constructor(fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") {
     this.chess = new Chess(fen);
     this.nodes = 0;
-  
   }
 
   reset() {
@@ -129,7 +128,7 @@ class ChessUtils {
    
 
   minimax(depth, c) {
-     let result = this.mini(depth, -Infinity, Infinity, c);
+     let result = this.mini(depth, -Infinity, Infinity, c);     
     //  let result = this.mini(depth, c);
     //  console.log("Nodes: " + this.nodes);
      return result;
@@ -139,13 +138,13 @@ class ChessUtils {
 
   maxi(depth, alpha, beta, c) {
     this.nodes++;
-    if(depth == 0 || this.chess.game_over()) return c * this.evaluate(depth);
+     if(depth == 0 || this.chess.game_over()) return c * this.evaluate(depth);
     let max = -Infinity;
     let moves = this.legalMoves();
     for(let i = 0; i < moves.length; i++) {
       this.move(moves[i]);
       let score = this.mini(depth-1, alpha, beta, c);
-      this.undo();
+       this.undo();
       max = Math.max(max, score);
       alpha = Math.max(alpha, max);
       if(beta <= alpha) {
