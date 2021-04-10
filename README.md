@@ -1,4 +1,4 @@
 # FurryBot-ChessAI
 https://lichess.org/@/FurryBot
 
-![CPU Profiler](/src/slow.png)
+![CPU Profiler](/src/slow.PNG)
