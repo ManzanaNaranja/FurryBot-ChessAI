@@ -1,5 +1,5 @@
 # FurryBot-ChessAI
 https://lichess.org/@/FurryBot
 
-### img of why bot is slow
+### it seems like chess.js is slow
 ![CPU Profiler](/src/slow.PNG)
